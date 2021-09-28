@@ -1,19 +1,27 @@
 package base;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import utilities.ExcelReader;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -35,16 +43,15 @@ public class TestBase {
     public static Properties config = new Properties();
     public static Properties OR = new Properties();
     public static FileInputStream fis;
+    public static ExcelReader excel = new ExcelReader(System.getProperty("user.dir") + "\\src\\test\\resources\\excel\\testdata.xlsx");
     public Logger log = Logger.getLogger("devpinoyLogger");
-
+    public static WebDriverWait wait;
 
 
     @BeforeSuite
     public void setUp() {
-        //       String log4jConfPath = "/src/test/resources/logs/log4j.properties";
-        //       PropertyConfigurator.configure(log4jConfPath);
-//        log = Logger.getLogger("devpinoyLogger");
-//        log.debug ("- information--");
+     //   String log4jConfPath = System.getProperty("user.dir")+ "\\src\\test\\resources\\logs\\log4j.properties";
+
         if (driver == null) {
             FileInputStream fis = null;
 
@@ -91,18 +98,23 @@ public class TestBase {
 
         }
 
-      //  String log4jConfPath = "/src/test/resources/logs/log4j.properties";
-     //   PropertyConfigurator.configure(log4jConfPath);
-
-      // String log4jConfPath = System.getProperty("user.dir")+"/src/test/resources/logs/log4j.properties";
-   //     Logger log = Logger.getLogger("devpinoyLogger");
 
         driver.get(config.getProperty("testsiteurl"));
         log.debug("Navigate to : " + config.getProperty("testsiteurl"));
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Integer.parseInt(config.getProperty("implicit.wait")), TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, 5);
     }
 
+    public boolean isElementPresent(By by) {
+
+        try{
+            driver.findElement(by);
+            return true;
+        }catch(NoSuchElementException e){
+                return false;
+        }
+    }
 
     @AfterSuite
     public void tearDown() {
@@ -110,5 +122,14 @@ public class TestBase {
             driver.quit();
         }
         log.debug("Test execution completed");
+    }
+
+    public void failed() {
+        File scrFile =((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(scrFile, new File("C:\\Users\\szymanie\\IdeaProjects\\DataDrivenFramework\\src\\test\\java\\base\\screenshots"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

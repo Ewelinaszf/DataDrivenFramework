@@ -1,19 +1,24 @@
 package testcases;
 
 import base.TestBase;
+
 import org.openqa.selenium.By;
+import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
+import utilities.TestUtil;
 
 public class LoginTest extends TestBase {
 
     @Test
-    public void loginAsBankManager() throws InterruptedException {
-        //log.debug("Inside Login Test");
+    public void loginAsBankManager()  {
+
         log.info("Inside Login Test");
         driver.findElement(By.cssSelector((OR.getProperty("bankManagerLoginButton")))).click();
-        Thread.sleep(3000);
-
-       // log.debug("Login successfully executed");
+        Assert.assertTrue(isElementPresent(By.cssSelector(OR.getProperty("addCustomerButton", "Login not successful"))));
         log.info("Login successfully executed");
+
+      Assert.fail("Login not successfull");
+
     }
 }
