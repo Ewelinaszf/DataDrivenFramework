@@ -13,10 +13,10 @@
         </classes>
     </test>
 
-<!--    <test name="Add Customer Test">-->
-<!--        <classes>-->
-<!--            <class name="testcases.AddCustomerTest"/>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="Add Customer Test">
+        <classes>
+            <class name="testcases.AddCustomerTest"/>
+        </classes>
+    </test>
 </suite>
 

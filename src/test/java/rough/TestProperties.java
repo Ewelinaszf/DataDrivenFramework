@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class TestProperties {
-
     public static void main(String[] args) throws IOException {
         System.out.println(System.getProperty("user.dir"));
         Properties config = new Properties();
@@ -18,6 +17,5 @@ public class TestProperties {
         OR.load(fis);
         System.out.println(config.getProperty(config.getProperty("browser")));
         System.out.println(OR.getProperty("bankManagerLoginButton"));
-
     }
 }
