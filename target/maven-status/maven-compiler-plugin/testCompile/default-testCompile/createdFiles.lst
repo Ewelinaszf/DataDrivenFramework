@@ -1,8 +1,9 @@
+base\listeners\CustomListeners.class
 base\TestBase.class
+testcases\OpenAccountTest.class
 utilities\ExtentManager.class
+testcases\AddCustomerTest.class
+testcases\BankManagerLoginTest.class
 utilities\ExcelReader.class
 rough\TestProperties.class
-utilities\TestUtils.class
-base\listeners\CustomListeners.class
-testcases\LoginTest.class
-testcases\AddCustomerTest.class
+utilities\TestUtil.class

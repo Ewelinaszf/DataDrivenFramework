@@ -3,14 +3,16 @@
            tests="4"
            failures="0"
            errors="0"
-           skipped="0"
-           time="42.473">
+           skipped="1"
+           time="28.584">
   <properties />
   
+            <testcase name="addCustomerTest" time="0.0" classname="testcases.AddCustomerTest">
+          <skipped />
+    </testcase>
   
-            <testcase name="addCustomer" time="11.177" classname="testcases.AddCustomerTest" />
-                <testcase name="addCustomer" time="10.418" classname="testcases.AddCustomerTest" />
-                <testcase name="addCustomer" time="10.519" classname="testcases.AddCustomerTest" />
-                <testcase name="addCustomer" time="10.359" classname="testcases.AddCustomerTest" />
+            <testcase name="addCustomerTest" time="7.834" classname="testcases.AddCustomerTest" />
+                <testcase name="addCustomerTest" time="7.422" classname="testcases.AddCustomerTest" />
+                <testcase name="addCustomerTest" time="8.326" classname="testcases.AddCustomerTest" />
       
 </testsuite>

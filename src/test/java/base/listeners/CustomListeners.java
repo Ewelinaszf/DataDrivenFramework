@@ -2,11 +2,8 @@ package base.listeners;
 
 import base.TestBase;
 import com.relevantcodes.extentreports.LogStatus;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
-import org.testng.Reporter;
-import utilities.TestUtils;
+import org.testng.*;
+import utilities.TestUtil;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -21,6 +18,13 @@ public class CustomListeners extends TestBase implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
         extentTest = extent.startTest(result.getName().toUpperCase(Locale.ROOT));
+//        if(!TestUtil.isTestRunnable(result.getName(), excel)){
+//            System.out.println("-----------------");
+//            System.out.println("???????????????????");
+//            System.out.println(result.getName());
+//            throw new SkipException("Skipping the test "+ result.getName().toUpperCase()+ " as the Run mode is NO");
+//
+//        }
     }
 
 
@@ -28,17 +32,17 @@ public class CustomListeners extends TestBase implements ITestListener {
     public void onTestFailure(ITestResult result) {
         System.setProperty("org.uncommons.reportng.escape-output","false");
         try {
-            TestUtils.captureScreenshot();
+            TestUtil.captureScreenshot();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         extentTest.log(LogStatus.FAIL, result.getName().toUpperCase(Locale.ROOT)+" FAILED with exception: "+ result.getThrowable());
-        extentTest.log(LogStatus.FAIL, extentTest.addScreenCapture(TestUtils.screenshotName2));
+        extentTest.log(LogStatus.FAIL, extentTest.addScreenCapture(TestUtil.screenshotName));
 
-        Reporter.log("<a target=\"_blank\" href="+ TestUtils.screenshotName2+">Screenshot</a>");
+        Reporter.log("<a target=\"_blank\" href="+ TestUtil.screenshotName+">Screenshot</a>");
         Reporter.log("<br>");
-        Reporter.log("<a target=\"_blank\" href="+ TestUtils.screenshotName2+"><img src="+ TestUtils.screenshotName2+" height=200 width=200></img></a>");
+        Reporter.log("<a target=\"_blank\" href="+ TestUtil.screenshotName+"><img src="+ TestUtil.screenshotName+" height=200 width=200></img></a>");
         extent.endTest(extentTest);
         extent.flush();
 
@@ -48,7 +52,9 @@ public class CustomListeners extends TestBase implements ITestListener {
 
     @Override
     public void onTestSkipped(ITestResult result) {
-
+        extentTest.log(LogStatus.SKIP, result.getName().toUpperCase(Locale.ROOT)+" Skipped with exception: "+ result.getThrowable());
+        extent.endTest(extentTest);
+        extent.flush();
     }
 
     @Override

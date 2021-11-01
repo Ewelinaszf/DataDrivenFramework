@@ -1,49 +1,32 @@
 package testcases;
 
 import base.TestBase;
+import org.junit.Assert;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
+import utilities.TestUtil;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.Hashtable;
 
 public class AddCustomerTest extends TestBase {
 
-    @Test(dataProvider = "getData")
-    public void addCustomer(String firstName, String lastName, String postCode, String alertText) throws InterruptedException {
+    @Test(dataProviderClass = TestUtil.class, dataProvider="dp")
+    public void addCustomerTest(Hashtable<String, String> data) throws InterruptedException {
         Thread.sleep(5000);
-
-        driver.findElement(By.cssSelector(OR.getProperty("addCustomerButton"))).click();
-        driver.findElement(By.cssSelector(OR.getProperty("firstName"))).sendKeys(firstName);
-        driver.findElement(By.cssSelector(OR.getProperty("lastName"))).sendKeys(lastName);
-        driver.findElement(By.cssSelector(OR.getProperty("postalCode"))).sendKeys(postCode);
-        driver.findElement(By.cssSelector(OR.getProperty("addButton"))).click();
-        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-        Assert.assertTrue(alert.getText().contains(alertText));
-        Thread.sleep(5000);
-        alert.accept();
-
-    }
-
-    @DataProvider(name = "getData")
-    public Object[][] getData() {
-
-        String sheetName = "AddCustomerTest";
-        int rows = excel.getRowCount(sheetName);
-        int cols = excel.getColumnCount(sheetName);
-        Object[][] data = new Object[rows - 1][cols - 1];
-
-        for (int rowNum = 2; rowNum <= rows; rowNum++) {
-            for (int colNum = 0; colNum < cols - 1; colNum++) {
-                data[rowNum - 2][colNum] = excel.getCellData(sheetName, colNum, rowNum);
-            }
+        if(!data.get("runmode").equals("Y")) {
+            throw new SkipException(("Skipping the test case as the Run mode for test"));
         }
-        System.out.println(Arrays.deepToString(data));
-        return data;
+        click("addCustomerButton_CSS");
+        type("firstName_CSS", data.get("firstname"));
+        type("lastName_CSS", data.get("lastname"));
+        type("postalCode_CSS", data.get("postcode"));
+        click("addButton_CSS");
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        Assert.assertTrue(alert.getText().contains(data.get("alerttext")));
+        alert.accept();
+        Thread.sleep(2000);
     }
+
 }

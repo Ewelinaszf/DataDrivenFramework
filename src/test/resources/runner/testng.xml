@@ -9,13 +9,19 @@
     </listeners>
     <test name="Bank Manager Login Test">
         <classes>
-            <class name="testcases.LoginTest"/>
+            <class name="testcases.BankManagerLoginTest"/>
         </classes>
     </test>
 
     <test name="Add Customer Test">
         <classes>
             <class name="testcases.AddCustomerTest"/>
+        </classes>
+    </test>
+
+    <test name="Open Account Test">
+        <classes>
+            <class name="testcases.OpenAccountTest"/>
         </classes>
     </test>
 </suite>
